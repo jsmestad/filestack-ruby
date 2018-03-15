@@ -22,13 +22,14 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "unirest", "~> 1.1.2"
-  spec.add_dependency "parallel", "~> 1.11.2"
+  spec.add_dependency "unirest", '~> 1.1'
+  spec.add_dependency "rest-client", '~> 2.0.2'
+  spec.add_dependency "parallel", "~> 1.12"
   spec.add_dependency "mimemagic", "~> 0.3.2"
   spec.add_dependency "progress_bar"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "simplecov", "~> 0.14"
+  spec.add_development_dependency "coveralls"
 end

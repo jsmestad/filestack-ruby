@@ -1,9 +1,3 @@
-require 'simplecov'
-SimpleCov.start 
-
-require 'coveralls'
-Coveralls.wear!
-
 require 'spec_helper'
 require './lib/filestack'
 require 'filestack/config'
@@ -36,7 +30,7 @@ class GeneralResponse
     @code = error_number
     @body = body_content
   end
-  
+
   def code
     @code
   end
@@ -184,7 +178,7 @@ RSpec.describe Filestack::Ruby do
       .and_return(@response)
 
     response = MultipartUploadUtils.multipart_start(
-      @test_apikey, @test_filename, @test_filesize, 
+      @test_apikey, @test_filename, @test_filesize,
       @start_response, @test_security, nil
     )
     expect(response).to eq('thisissomecontent')
@@ -302,7 +296,7 @@ RSpec.describe Filestack::Ruby do
       .and_return(GeneralResponse.new({'handle' => 'somehandle'}, 202))
     expect{@test_client.upload(filepath: @test_filepath, intelligent: true, timeout: 1)}.to raise_error(RuntimeError)
   end
-  
+
   it 'creates a batch of jobs' do
     jobs = []
 
@@ -341,7 +335,7 @@ RSpec.describe Filestack::Ruby do
     expect {IntelligentUtils.run_intelligent_upload_flow(jobs, state)}.to raise_error(RuntimeError)
   end
 
-  it 'runs intelligent uploads without error' do 
+  it 'runs intelligent uploads without error' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -356,7 +350,7 @@ RSpec.describe Filestack::Ruby do
     expect(state.ok)
   end
 
-  it 'runs intelligent uploads with failure error' do 
+  it 'runs intelligent uploads with failure error' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -370,7 +364,7 @@ RSpec.describe Filestack::Ruby do
     expect(state.error_type).to eq('FAILURE')
   end
 
-  it 'retries upon failure' do 
+  it 'retries upon failure' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -383,7 +377,7 @@ RSpec.describe Filestack::Ruby do
     expect {IntelligentUtils.run_intelligent_upload_flow(jobs, state)}.to raise_error
   end
 
-  it 'retries upon network failure' do 
+  it 'retries upon network failure' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -396,7 +390,7 @@ RSpec.describe Filestack::Ruby do
     expect {IntelligentUtils.run_intelligent_upload_flow(jobs, state)}.to raise_error
   end
 
-  it 'retries upon server failure' do 
+  it 'retries upon server failure' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -409,7 +403,7 @@ RSpec.describe Filestack::Ruby do
     expect {IntelligentUtils.run_intelligent_upload_flow(jobs, state)}.to raise_error
   end
 
-  it 'retries upon backend network failure' do 
+  it 'retries upon backend network failure' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -422,7 +416,7 @@ RSpec.describe Filestack::Ruby do
     expect {IntelligentUtils.run_intelligent_upload_flow(jobs, state)}.to raise_error
   end
 
-  it 'runs intelligent uploads with 400 error' do 
+  it 'runs intelligent uploads with 400 error' do
     state = IntelligentState.new
     filename, filesize, mimetype = MultipartUploadUtils.get_file_info(@test_filepath)
     jobs = create_upload_jobs(
@@ -540,14 +534,14 @@ RSpec.describe Filestack::Ruby do
     expect(bad).to eq('Overwrite requires security')
   end
 
-  it 'gets metadata' do 
+  it 'gets metadata' do
     allow(UploadUtils).to receive(:make_call)
       .and_return(GeneralResponse.new({data: 'data'}))
     metadata = @test_filelink.metadata
     expect(metadata[:data]).to eq('data')
   end
 
-  it 'gets metadata with security' do 
+  it 'gets metadata with security' do
     allow(UploadUtils).to receive(:make_call)
       .and_return(GeneralResponse.new({data: 'data'}))
     metadata = @test_secure_filelink.metadata
@@ -611,7 +605,7 @@ RSpec.describe Filestack::Ruby do
     transform = @test_client.transform_external('http://someurl.com')
     expect(transform.url).to eq("https://cdn.filestackcontent.com/#{@test_apikey}/http://someurl.com")
   end
-  
+
   ###############
   ## TAGS TESTS #
   ###############

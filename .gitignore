@@ -15,5 +15,7 @@ Gemfile.lock
 /test/version_tmp/
 /tmp/
 
+test-files/test.zip
+
 # Used by dotenv library to load environment variables.
 # .env
